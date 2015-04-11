@@ -31,9 +31,19 @@ Git flow 練習用專案
 ## 如何合併 Branch
 
 1. 先確定 develop 是最新的 `git pull origin develop`
-2. 對 feature branch 做 `git rebase develop` (這裏最難，要學會 interactive mode，可以拿掉某個 commit 以及合併或修改內容)
+2. 對 feature branch 做 `git rebase develop -i` (這裏最難，要學會 interactive mode，可以拿掉某個 commit 以及合併或修改內容)
 3. 在從 develop bracnh 做 `git merge feature/some_awesome_feature -–no-ff`，-–no-ff 的意思是會強制留一個 merge commit log 記錄，這可以讓 commit tree 看清楚發生了 merge 動作。(因為我們剛做了 rebase，而 git 預設的合併模式是 fast-forward，所以如果不加 –no-ff 是不會有 merge commit 的) 這個 merge commit 的另一個額外方便之處是，如果想要 reset/revert 整個 branch 只要 reset/revert 這個 commit 就可以了
 4. 如果此 feature branch 有 remote branch，要先砍掉 `git push origin :feature/some_awesome_feature` 再 `git push origin develop` (這是因為 rebase 一個已經 push 出去的 repository，然後又把修改的 history push 出去，會讓 develop branch 產生大問題)
+
+## 重要 Git 指令
++ revert 可以針對某個 commit 進行還原，並留下紀錄（之前的 commit）
++ rebase 重新 commit，使用 -i 可以用來修正 commit 的紀錄
++ reset 清除掉某個 commit 之後的 commit
+	+  `reset A`
+	+  `reset HEAD^` 保留修改的內容在 working tree
+	+  `reset HEAD^ --soft` 保留修改的內容在 staging area
+	+  `reset HEAD^ --hard` 全部砍光光～
+
 
 
 ## [Pull Request](https://github.com/blog/785-pull-request-diff-comments)
